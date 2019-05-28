@@ -25,18 +25,22 @@ class App extends Component {
         });
       });
   }
-  addToCart(item) {
+  addToCart(item) {    
     this.setState({
-      cart: item
+      cart: [...this.state.cart, item]
     });
   }
   removeFromCart(index) {
-    let cartCopy = this.state.products.slice();
+    let cartCopy = this.state.cart.slice();
+
+//    let ind = cartCopy.findIndex(item => item.id === index.id)
+
     cartCopy.splice(index, 1);
     this.setState({
       cart: cartCopy
     });
   }
+
   navigate(location) {
     if (location === "cart") {
       this.setState({
@@ -49,17 +53,18 @@ class App extends Component {
     }
   }
   render() {
-    const { products, cart, showCart } = this.state;
+    const { products, showCart } = this.state;
     return (
       <div className="App">
         <NavBar navigate={this.navigate} />
         <div className="main-container">
           {showCart ? (
-            <ShoppingCart cart={cart} removeFromCart={this.removeFromCart} />
+            <ShoppingCart cart={this.state.cart} removeFromCart={this.removeFromCart} />
           ) : (
             <StoreFront products={products} addToCart={this.addToCart} />
           )}
         </div>
+       
       </div>
     );
   }
